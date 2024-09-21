@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='face-recognition-personal-identification-collage-1600x898.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(0, 0, 50, 0.8); /* Dark, transparent background */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #00d4ff;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+        }
+        input[type="file"] {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 0 25px rgba(0, 123, 255, 0.8);
+        }
+        h2 {
+            color: #00ffae;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.5;
+            color: #d8e8ff;
+        }
+        img {
+            margin-top: 20px;
+            border-radius: 8px;
+            max-width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Tissue Sample Image</h1>
+        <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if prediction %}
+            <h2>Prediction: {{ prediction }}</h2>
+            <p>There is a {{ probability_benign|round(2) }}% chance of being benign.</p>
+            <p>There is a {{ probability_malignant|round(2) }}% chance of being malignant.</p>
+            <img src="{{ url_for('display_image', filename=filename) }}" alt="Uploaded Image">
+        {% endif %}
+    </div>
+</body>
+</html>
